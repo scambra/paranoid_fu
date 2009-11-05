@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 require 'rake/testtask'
 
 PKG_NAME      = 'paranoid_fu'
-PKG_VERSION   = '0.4.1'
+PKG_VERSION   = '0.4.2'
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
 desc 'Default: run unit tests.'

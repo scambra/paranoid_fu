@@ -10,15 +10,16 @@ module ParanoidFu
     # option of the macro, if given, or +nil+ otherwise.
     def sanitized_conditions_with_paranoid_fu
       sanitized_conditions_without_paranoid_fu
-      if !self.options[:polymorphic] && self.options.delete(:without_deleted)
+      if !self.options[:polymorphic] && self.options[:without_deleted]
         klass = if self.through_reflection
           self.through_reflection.klass
         else
           self.klass
         end
-        @sanitized_conditions = klass.merge_conditions(@sanitized_conditions, klass.without_deleted_conditions(klass.table_name)) if klass
+        klass.merge_conditions(@sanitized_conditions, klass.without_deleted_conditions(klass.table_name)) if klass
+      else
+      	@sanitized_conditions
       end
-      @sanitized_conditions
     end
   end
 end
