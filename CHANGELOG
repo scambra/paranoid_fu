@@ -1,3 +1,9 @@
+* (5 Nov 2009)
+Rewrite to use named_scopes
+Remove with_deleted option, now it's the default behavior
+Add without_deleted option to get the previous behavior
+Fix belongs_to polymorphic associations
+
 * (16 Apr 2009)
 
 Allow :with_deleted and :only_deleted options to work with count and calculate.

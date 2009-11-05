@@ -1,9 +1,9 @@
-module ActsAsParanoid #:nodoc:
+module ParanoidFu #:nodoc:
   # Overrides some basic methods for the current model so that calling #destroy sets a 'deleted_at' field to the current timestamp.
   # This assumes the table has a deleted_at date/time field.  Most normal model operations will work, but there will be some oddities.
   #
   #   class Widget < ActiveRecord::Base
-  #     acts_as_paranoid
+  #     paranoid_fu
   #   end
   #
   #   Widget.find(:all)
@@ -51,7 +51,7 @@ module ActsAsParanoid #:nodoc:
     end
 
     module ClassMethods
-      def acts_as_paranoid(options = {})
+      def paranoid_fu(options = {})
         unless paranoid? # don't let AR call this twice
           cattr_accessor :deleted_attribute
           self.deleted_attribute = options[:with] || :deleted_at

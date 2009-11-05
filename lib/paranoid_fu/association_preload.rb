@@ -1,4 +1,4 @@
-module ActsAsParanoid
+module ParanoidFu
   module AssociationPreload
     def set_association_single_records(id_to_record_map, reflection_name, associated_records, key)
       reflection = reflect_on_association(reflection_name)

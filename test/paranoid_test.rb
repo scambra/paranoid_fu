@@ -3,11 +3,11 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 class Tagging < ActiveRecord::Base
   belongs_to :tag
   belongs_to :widget
-  acts_as_paranoid
+  paranoid_fu
 end
 
 class Widget < ActiveRecord::Base
-  acts_as_paranoid
+  paranoid_fu
   has_many :categories, :dependent => :destroy
   has_and_belongs_to_many :habtm_categories, :class_name => 'Category'
   has_one :category
@@ -18,7 +18,7 @@ class Widget < ActiveRecord::Base
 end
 
 class Category < ActiveRecord::Base
-  acts_as_paranoid
+  paranoid_fu
   belongs_to :widget, :without_deleted => true
   belongs_to :any_widget, :class_name => 'Widget', :foreign_key => 'widget_id'
 
@@ -204,7 +204,7 @@ class ParanoidTest < ActiveSupport::TestCase
   end
   
   def test_should_ignore_multiple_includes
-    Widget.class_eval { acts_as_paranoid }
+    Widget.class_eval { paranoid_fu }
     assert Widget.find(1)
   end
 

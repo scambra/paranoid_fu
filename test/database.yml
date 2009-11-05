@@ -1,18 +1,18 @@
 sqlite:
   :adapter: sqlite
-  :database: acts_as_paranoid_plugin.sqlite.db
+  :database: paranoid_fu_plugin.sqlite.db
 sqlite3:
   :adapter: sqlite3
-  :database: acts_as_paranoid_plugin.sqlite3.db
+  :database: paranoid_fu_plugin.sqlite3.db
 postgresql:
   :adapter: postgresql
   :username: postgres
   :password: postgres
-  :database: acts_as_paranoid_plugin_test
+  :database: paranoid_fu_plugin_test
   :min_messages: ERROR
 mysql:
   :adapter: mysql
   :host: localhost
   :username: rails
   :password:
-  :database: acts_as_paranoid_plugin_test
+  :database: paranoid_fu_plugin_test

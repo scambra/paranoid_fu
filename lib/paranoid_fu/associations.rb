@@ -1,4 +1,4 @@
-module ActsAsParanoid #:nodoc:
+module ParanoidFu #:nodoc:
   module Associations
     # === Options
     # [:without_deleted]
