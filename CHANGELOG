@@ -1,4 +1,8 @@
-* (5 Nov 2009)
+* (5 Nov 2009) 0.4.1
+Add without_deleted option for has_one and has_and_belongs_to_many
+Fix testing without application
+
+* (5 Nov 2009) 0.4.0
 Rewrite to use named_scopes
 Remove with_deleted option, now it's the default behavior
 Add without_deleted option to get the previous behavior

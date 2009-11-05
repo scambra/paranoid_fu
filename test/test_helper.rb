@@ -9,9 +9,10 @@ else
   # load activerecord and plugin manually
   gem 'activerecord', "=#{ENV['RAILS']}"
   require 'active_record'
-  $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
-  Dir["#{$LOAD_PATH.last}/**/*.rb"].each do |path| 
-    require path[$LOAD_PATH.last.size + 1..-1]
+  ActiveRecord.load_all!
+  require 'active_record/associations'
+  Dir["#{File.join(File.dirname(__FILE__), '..', 'lib')}/**/*.rb"].each do |path|
+    require path
   end
   require File.join(File.dirname(__FILE__), '..', 'init.rb')
 end
@@ -23,6 +24,11 @@ ActiveRecord::Base.configurations.update config
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
 ActiveRecord::Base.establish_connection(config[ENV['DB'] || 'sqlite3'])
 
+models_dir = File.join(File.dirname(__FILE__), 'app/models')
+Dir["#{models_dir}/**/*.rb"].each do |path|
+  model = path[models_dir.size+1..-4]
+  autoload model.classify.to_sym, "#{models_dir}/#{model}"
+end
 load(File.dirname(__FILE__) + "/schema.rb")
 
 class ActiveSupport::TestCase #:nodoc:

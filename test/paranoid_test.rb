@@ -1,51 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class Tagging < ActiveRecord::Base
-  belongs_to :tag
-  belongs_to :widget
-  paranoid_fu
-end
-
-class Widget < ActiveRecord::Base
-  paranoid_fu
-  has_many :categories, :dependent => :destroy
-  has_and_belongs_to_many :habtm_categories, :class_name => 'Category'
-  has_one :category
-  belongs_to :parent_category, :class_name => 'Category'
-  has_many :taggings
-  has_many :tags, :through => :taggings, :without_deleted => true
-  has_many :any_tags, :through => :taggings, :class_name => 'Tag', :source => :tag
-end
-
-class Category < ActiveRecord::Base
-  paranoid_fu
-  belongs_to :widget, :without_deleted => true
-  belongs_to :any_widget, :class_name => 'Widget', :foreign_key => 'widget_id'
-
-  def self.search(name, options = {})
-    without_deleted.all options.merge(:conditions => ['LOWER(title) LIKE ?', "%#{name.to_s.downcase}%"])
-  end
-
-  def self.search_with_deleted(name, options = {})
-    all options.merge(:conditions => ['LOWER(title) LIKE ?', "%#{name.to_s.downcase}%"])
-  end
-end
-
-class Tag < ActiveRecord::Base
-  has_many :taggings
-  has_many :widgets, :through => :taggings
-end
-
-class Order < ActiveRecord::Base
-  belongs_to :item, :polymorphic => true, :without_deleted => true
-  belongs_to :any_item, :polymorphic => true, :foreign_key => 'item_id', :foreign_type => 'item_type'
-end
-
-class NonParanoidAndroid < ActiveRecord::Base
-end
-
 class ParanoidTest < ActiveSupport::TestCase
-  fixtures :widgets, :categories, :categories_widgets, :tags, :taggings, :orders
+  fixtures :categories, :widgets, :categories_widgets, :tags, :taggings, :orders
   
   def test_without_deleted_scope
     assert_equal [1, 2], Widget.all.ids
@@ -313,6 +269,14 @@ class ParanoidTest < ActiveSupport::TestCase
     o = Order.find(:first, :include => :any_item)
     assert_equal orders(:order_1), o
     assert_equal widgets(:widget_2), o.instance_variable_get(:@any_item)
+
+    assert_equal 1, widgets(:widget_1).non_deleted_habtm_categories.size
+    assert_equal [categories(:category_1)], widgets(:widget_1).non_deleted_habtm_categories
+    w = Widget.find(1, :include => :non_deleted_habtm_categories, :conditions => {'categories.title' => 'category 1'})
+    assert_equal [categories(:category_1)], w.non_deleted_habtm_categories
+    assert_raises(ActiveRecord::RecordNotFound) do
+      Widget.find(1, :include => :non_deleted_habtm_categories, :conditions => {'categories.title' => 'category 2'})
+    end
   end
 end
 

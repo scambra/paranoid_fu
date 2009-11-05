@@ -10,7 +10,21 @@ module ParanoidFu #:nodoc:
       end
     end
   
+    def has_one(association_id, options = {})
+      without_deleted = options.delete :without_deleted
+      returning super(association_id, options) do
+        restore_without_deleted(association_id, without_deleted)
+      end
+    end
+  
     def has_many(association_id, options = {}, &extension)
+      without_deleted = options.delete :without_deleted
+      returning super(association_id, options, &extension) do
+        restore_without_deleted(association_id, without_deleted)
+      end
+    end
+  
+    def has_and_belongs_to_many(association_id, options = {}, &extension)
       without_deleted = options.delete :without_deleted
       returning super(association_id, options, &extension) do
         restore_without_deleted(association_id, without_deleted)
