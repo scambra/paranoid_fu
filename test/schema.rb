@@ -26,5 +26,10 @@ ActiveRecord::Schema.define(:version => 1) do
     t.column :widget_id, :integer
     t.column :deleted_at, :timestamp
   end
+  
+  create_table :orders, :force => true do |t|
+    t.column :item_id, :integer
+    t.column :item_type, :string
+  end
 
 end

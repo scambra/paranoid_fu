@@ -1,0 +1,8 @@
+order_1:
+  id: 1
+  item_id: 2
+  item_type: Widget
+order_2:
+  id: 2
+  item_id: 1
+  item_type: Category
